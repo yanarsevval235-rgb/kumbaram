@@ -1459,3 +1459,15 @@ body {
     color: #0F172A !important;
     background: rgba(13,148,136,0.1) !important;
 }
+
+
+.footer-wave {
+    line-height: 0;
+    margin-top: -2px;
+}
+
+.footer-wave svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
