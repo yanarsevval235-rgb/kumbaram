@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gizlilik Politikası - Kumbaram</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230D9488'/%3E%3Ctext y='.75em' x='50' text-anchor='middle' font-size='65'%3E💰%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --primary: #0D9488;
+            --primary-light: #CCFBF1;
+            --dark: #0F172A;
+            --gray: #64748B;
+            --white: #FFFFFF;
+            --font: "Inter", sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: #F8FAFC; color: var(--dark); line-height: 1.8; }
+        
+        .header { background: var(--primary); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header .container { max-width: 900px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; }
+        .logo span { color: #2DD4BF; }
+        .back-link { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; font-size: 0.9rem; }
+        .back-link:hover { color: white; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px; }
+        
+        .hero { background: linear-gradient(135deg, var(--primary), #0F766E); color: white; padding: 60px 24px; text-align: center; }
+        .hero h1 { font-size: 2.5rem; font-weight: 900; margin-bottom: 10px; }
+        .hero p { opacity: 0.8; font-size: 1.1rem; }
+        .hero .icon { font-size: 50px; margin-bottom: 20px; }
+
+        .content { background: white; border-radius: 24px; padding: 50px 40px; margin-top: -30px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+        
+        h2 { font-size: 1.4rem; margin: 35px 0 12px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        h2:first-child { margin-top: 0; }
+        h2 .num { background: var(--primary-light); color: var(--primary); width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; flex-shrink: 0; }
+        
+        p { color: var(--gray); margin-bottom: 12px; font-size: 0.95rem; }
+        ul { color: var(--gray); padding-left: 20px; margin-bottom: 15px; font-size: 0.95rem; }
+        ul li { margin-bottom: 6px; }
+        ul li::marker { color: var(--primary); }
+        
+        .highlight { background: var(--primary-light); padding: 20px 24px; border-radius: 16px; margin: 25px 0; border-left: 4px solid var(--primary); }
+        .highlight p { color: var(--dark); font-weight: 500; margin: 0; }
+        
+        .footer-note { text-align: center; color: var(--gray); font-size: 0.85rem; margin-top: 30px; }
+        .footer-note a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
+        @media (max-width: 600px) {
+            .content { padding: 30px 20px; }
+            .hero h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">Kumb<span>aram</span></a>
+            <a href="index.html" class="back-link">← Ana Sayfa</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="icon">🔒</div>
+        <h1>Gizlilik Politikası</h1>
+       <p style="color: rgba(255,255,255,0.8);">Verileriniz bizim için değerlidir. İşte nasıl koruduğumuz.</p>
+    </section>
+
+    <div class="container">
+        <div class="content">
+            <h2><span class="num">1</span> Verileriniz Nerede Saklanır?</h2>
+            <p>Kumbaram, tüm finansal verilerinizi <strong>sadece sizin cihazınızda</strong> saklar. Hiçbir işlem kaydınız, kart bilginiz veya kişisel veriniz sunucularımıza gönderilmez. Verileriniz tamamen sizin kontrolünüzdedir.</p>
+            
+            <div class="highlight">
+                <p>🔐 <strong>Önemli:</strong> Kumbaram'ın hiçbir sunucusu yoktur. Tüm veriler telefonunuzun SQLite veritabanında, şifreli olarak saklanır.</p>
+            </div>
+
+            <h2><span class="num">2</span> Hangi Veriler Saklanır?</h2>
+            <p>Uygulamamız yalnızca finansal takip için gerekli olan şu verileri cihazınızda depolar:</p>
+            <ul>
+                <li>Gelir ve gider işlemleriniz (tutar, kategori, tarih, açıklama)</li>
+                <li>Kredi kartı bilgileriniz (banka adı, limit, kart numarası - şifreli)</li>
+                <li>Kategori ve bütçe tercihleriniz</li>
+                <li>Profil bilgileriniz (ad, e-posta, profil fotoğrafı)</li>
+                <li>Uygulama ayarlarınız (tema, para birimi, bildirim tercihleri)</li>
+            </ul>
+
+            <h2><span class="num">3</span> Verileriniz Nasıl Korunur?</h2>
+            <p>Kart bilgileriniz cihazınızda <strong>şifreli</strong> olarak saklanır. Uygulamamız internet bağlantısı gerektirmez, bu nedenle verilerinizin dışarı sızma riski yoktur. Yedekleme dosyalarınızı yalnızca siz dışa aktarabilirsiniz.</p>
+
+            <h2><span class="num">4</span> Üçüncü Taraflarla Paylaşım</h2>
+            <p>Kumbaram <strong>hiçbir üçüncü taraf</strong> ile veri paylaşmaz. Reklam ağları, analitik servisleri veya veri komisyoncuları ile çalışmıyoruz. Verileriniz asla satılmaz veya kiralanmaz.</p>
+
+            <h2><span class="num">5</span> Yedekleme ve Veri Taşıma</h2>
+            <p>Yedekleme özelliği tamamen isteğe bağlıdır. Yedek dosyası oluşturduğunuzda, bu dosya cihazınıza kaydedilir. Yedek dosyasının güvenliğinden ve saklanmasından siz sorumlusunuz. Yeni bir cihaza geçtiğinizde yedek dosyanızı kullanarak verilerinizi taşıyabilirsiniz.</p>
+
+            <h2><span class="num">6</span> İnternet Kullanımı</h2>
+            <p>Kumbaram yalnızca şu durumlarda internete bağlanır:</p>
+            <ul>
+                <li>Yedek dosyası paylaşmak istediğinizde</li>
+                <li>İletişim formunu kullandığınızda</li>
+            </ul>
+            <p>Bu işlemler tamamen sizin isteğinizle gerçekleşir.</p>
+
+            <h2><span class="num">7</span> Çocukların Gizliliği</h2>
+            <p>Kumbaram 13 yaş altı çocuklara yönelik değildir. Bilerek çocuklardan veri toplamayız.</p>
+
+            <h2><span class="num">8</span> Değişiklikler</h2>
+            <p>Bu gizlilik politikası zamanla güncellenebilir. Önemli değişiklikler olduğunda uygulama üzerinden bilgilendirileceksiniz.</p>
+
+            <h2><span class="num">9</span> İletişim</h2>
+            <p>Sorularınız, önerileriniz veya endişeleriniz için bizimle iletişime geçmekten çekinmeyin:</p>
+            <p>📧 <strong>info@kumbaram.com</strong></p>
+        </div>
+        
+        <div class="footer-note">
+            <p>© 2026 Kumbaram. <a href="index.html">Ana Sayfaya Dön</a></p>
+        </div>
+    </div>
+</body>
+</html>

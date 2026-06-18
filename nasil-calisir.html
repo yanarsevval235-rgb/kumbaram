@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nasıl Çalışır? - Kumbaram</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230D9488'/%3E%3Ctext y='.75em' x='50' text-anchor='middle' font-size='65'%3E💰%3C/text%3E%3C/svg%3E">
+    
+    <style>
+        :root {
+            --primary: #0D9488;
+            --primary-dark: #0F766E;
+            --primary-light: #CCFBF1;
+            --dark: #0F172A;
+            --gray: #64748B;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --font: "Inter", sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: var(--white); }
+
+        .how-nav {
+            padding: 20px 0;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+        }
+        .how-nav .container {
+            max-width: 1200px; margin: 0 auto; padding: 0 24px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; }
+        .logo span { color: #2DD4BF; }
+        .back-link { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; }
+
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-animation-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+        }
+        .hero-animation-bg video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 1;
+        }
+        .hero-section .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            padding: 0 24px;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            color: #2DD4BF;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            backdrop-filter: blur(5px);
+        }
+        .hero-section h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: white;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .hero-section h1 span { color: #2DD4BF; }
+        .hero-section p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 32px;
+        }
+        .hero-section .btn-primary {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .hero-section .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(13,148,136,0.4);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s infinite;
+            color: white;
+            font-size: 1.5rem;
+            opacity: 0.6;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .step-section {
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .step-section:nth-child(odd) {
+            background: var(--white);
+        }
+        .step-section:nth-child(even) {
+            background: #F0F9F6;
+        }
+
+        .step-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .step-section:nth-child(even) .step-container {
+            direction: rtl;
+        }
+        .step-section:nth-child(even) .step-container > * {
+            direction: ltr;
+        }
+
+        .step-text {
+            position: relative;
+        }
+
+        .step-number {
+            font-size: 15rem;
+            font-weight: 900;
+            color: rgba(13, 148, 136, 0.06);
+            position: absolute;
+            top: -80px;
+            left: -40px;
+            z-index: 0;
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .step-text-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-label {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .step-text h2 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        .step-text h2 span { color: var(--primary); }
+
+        .step-text .step-desc {
+            font-size: 1.05rem;
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .step-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+        .step-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        .step-features li i {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .step-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .step-mockup {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+            overflow: hidden;
+            border: 1px solid #E2E8F0;
+        }
+
+        .mockup-header {
+            background: var(--dark);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .mockup-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: #EF4444;
+        }
+        .mockup-dot:nth-child(2) { background: #F59E0B; }
+        .mockup-dot:nth-child(3) { background: #10B981; }
+
+        .mockup-body {
+            padding: 24px;
+        }
+
+        .mockup-body img {
+            width: 100%;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .cta-section {
+            padding: 100px 24px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        .cta-section h2 { font-size: 2.2rem; font-weight: 900; margin-bottom: 12px; }
+        .cta-section p { color: rgba(255,255,255,0.7); margin-bottom: 28px; font-size: 1.1rem; }
+        .cta-section .btn-primary {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .cta-section .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .cta-note { margin-top: 16px; font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+
+        @media (max-width: 768px) {
+            .step-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .step-section:nth-child(even) .step-container {
+                direction: ltr;
+            }
+            .step-number { font-size: 8rem; top: -40px; left: 0; }
+            .step-text h2 { font-size: 1.6rem; }
+        }
+    </style>
+
+</head>
+<body>
+
+    <nav class="how-nav">
+        <div class="container">
+            <a href="index.html" class="logo">Kumb<span>aram</span></a>
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Ana Sayfa</a>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-animation-bg">
+            <video autoplay muted loop playsinline>
+                <source src="images/174066-850313723_medium.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <div class="hero-badge">3 Kolay Adım</div>
+            <h1>Nasıl <span>Çalışır?</span></h1>
+            <p>Kumbaram ile finansal özgürlüğe ulaşmak çok kolay.</p>
+            <a href="#" class="btn-primary" onclick="alert('Yakinda yayinda! 🚀'); return false;">Hemen Başla <i class="fas fa-arrow-right"></i></a>
+        </div>
+        
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <section class="step-section">
+        <div class="step-container">
+            <div class="step-text">
+                <div class="step-number">1</div>
+                <div class="step-text-inner">
+                    <span class="step-label">1. Adım</span>
+                    <h2>Hesabını <span>Oluştur</span></h2>
+                    <p class="step-desc">
+                        30 saniyede ücretsiz hesap aç, finansal yolculuğuna başla. 
+                        Kredi kartı gerekmez, sadece e-posta adresin yeterli.
+                    </p>
+                    <ul class="step-features">
+                        <li><i class="fas fa-check-circle"></i> Sadece e-posta ve şifre ile kayıt ol</li>
+                        <li><i class="fas fa-check-circle"></i> 30 saniyeden kısa sürede hesap aç</li>
+                        <li><i class="fas fa-check-circle"></i> Tamamen ücretsiz, kredi kartı istenmez</li>
+                    </ul>
+                    <a href="#" style="display:inline-block;background:var(--primary);color:white;padding:14px 28px;border-radius:50px;font-weight:700;text-decoration:none;" onclick="alert('Yakinda yayinda! 🚀'); return false;">Hemen Kayıt Ol <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="step-image">
+                <div class="step-mockup">
+                    <div class="mockup-header">
+                        <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
+                    </div>
+                    <div class="mockup-body">
+                        <img src="images/pexels-bia-limova-1908542654-33175666.jpg" alt="Kayıt Ekranı" style="height:350px;object-fit:cover;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="step-section">
+        <div class="step-container">
+            <div class="step-text">
+                <div class="step-number">2</div>
+                <div class="step-text-inner">
+                    <span class="step-label">2. Adım</span>
+                    <h2>Kartlarını <span>Ekle</span></h2>
+                    <p class="step-desc">
+                        Kredi veya banka kartlarını ekle, limitlerini belirle. 
+                        8 farklı banka desteği ile tüm kartların tek ekranda.
+                    </p>
+                    <ul class="step-features">
+                        <li><i class="fas fa-check-circle"></i> 8 banka desteği (Ziraat, İş, Garanti, Akbank...)</li>
+                        <li><i class="fas fa-check-circle"></i> Luhn algoritması ile kart doğrulama</li>
+                        <li><i class="fas fa-check-circle"></i> Limit takibi ve harcama analizi</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="step-image">
+                <div class="step-mockup">
+                    <div class="mockup-header">
+                        <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
+                    </div>
+                    <div class="mockup-body">
+                        <img src="images/telefon.png" alt="Kart Ekleme" style="height:350px;object-fit:contain;background:#F0F9F6;border-radius:12px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="step-section">
+        <div class="step-container">
+            <div class="step-text">
+                <div class="step-number">3</div>
+                <div class="step-text-inner">
+                    <span class="step-label">3. Adım</span>
+                    <h2>Takip Et, <span>Biriktir</span></h2>
+                    <p class="step-desc">
+                        Harcamalarını kategorilere ayır, detaylı raporlarla analiz et. 
+                        Tasarruf hedefleri koy, birikimini büyüt.
+                    </p>
+                    <ul class="step-features">
+                        <li><i class="fas fa-check-circle"></i> 15+ kategoride detaylı analiz</li>
+                        <li><i class="fas fa-check-circle"></i> Pasta ve çubuk grafiklerle görsel rapor</li>
+                        <li><i class="fas fa-check-circle"></i> Excel ve PDF olarak dışa aktar</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="step-image">
+                <div class="step-mockup">
+                    <div class="mockup-header">
+                        <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
+                    </div>
+                    <div class="mockup-body">
+                        <img src="images/telefon2-removebg-preview.png" alt="Raporlar" style="height:350px;object-fit:contain;background:#F0F9F6;border-radius:12px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Finansal özgürlüğe hazır mısın?</h2>
+        <p>30 saniyede ücretsiz hesap oluştur, harcamalarını kontrol altına al.</p>
+        <a href="#" class="btn btn-primary btn-lg" onclick="alert('Yakinda yayinda! 🚀'); return false;">Hemen Başla <i class="fas fa-arrow-right"></i></a>
+        <div class="cta-note"><i class="fas fa-lock"></i> Kredi kartı gerekmez • 30 saniyede kurulum • Sonsuza kadar ücretsiz</div>
+    </section>
+
+</body>
+</html>

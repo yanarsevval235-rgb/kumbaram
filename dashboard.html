@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Kumbaram</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0D9488;
+            --primary-dark: #0F766E;
+            --primary-light: #CCFBF1;
+            --dark: #0F172A;
+            --gray: #64748B;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --font: "Inter", sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: #F0F9F6; display: flex; min-height: 100vh; }
+        
+        .sidebar {
+            width: 260px;
+            background: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 100;
+        }
+        
+        .sidebar .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--dark);
+            text-decoration: none;
+            margin-bottom: 30px;
+            padding: 0 12px;
+        }
+        .sidebar .logo span { color: var(--primary); }
+        
+        .sidebar a {
+            text-decoration: none;
+            color: var(--gray);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .sidebar .logout { margin-top: auto; color: #DC2626; }
+        .sidebar .logout:hover { background: #FEE2E2; color: #DC2626; }
+        
+        .main {
+            flex: 1;
+            padding: 30px;
+            margin-left: 260px;
+            overflow-y: auto;
+        }
+        
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .topbar h1 { font-size: 1.8rem; font-weight: 700; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-avatar {
+            width: 42px; height: 42px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .balance-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 28px;
+            border-radius: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 15px 30px rgba(13,148,136,0.2);
+        }
+        .balance-card small { opacity: 0.7; font-size: 0.8rem; letter-spacing: 1px; }
+        .balance-card .amount { font-size: 2.5rem; font-weight: 800; margin: 8px 0 16px; }
+        .balance-card .row { display: flex; gap: 24px; font-size: 0.9rem; }
+        
+        .quick-actions { display: flex; gap: 12px; margin-bottom: 24px; }
+        .quick-actions button {
+            flex: 1; padding: 16px; border: none; border-radius: 16px;
+            font-weight: 600; font-family: var(--font); cursor: pointer;
+            font-size: 0.95rem; transition: all 0.2s;
+        }
+        .btn-income { background: #D1FAE5; color: #059669; }
+        .btn-income:hover { background: #A7F3D0; transform: translateY(-2px); }
+        .btn-expense { background: #FEE2E2; color: #DC2626; }
+        .btn-expense:hover { background: #FECACA; transform: translateY(-2px); }
+        
+        .section-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 16px; }
+        
+        .transaction {
+            background: white;
+            padding: 16px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+        .transaction:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .tx-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
+        }
+        .tx-icon.red { background: #FEE2E2; color: #DC2626; }
+        .tx-icon.green { background: #D1FAE5; color: #059669; }
+        .tx-info { flex: 1; }
+        .tx-info strong { display: block; font-size: 0.95rem; }
+        .tx-info span { font-size: 0.8rem; color: #94A3B8; }
+        .tx-amount { font-weight: 700; font-size: 0.95rem; }
+        .tx-amount.red { color: #DC2626; }
+        .tx-amount.green { color: #059669; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="index.html" class="logo">Kumb<span>aram</span></a>
+        <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="islem-ekle.html"><i class="fas fa-plus-circle"></i> İşlem Ekle</a>
+        <a href="islemler.html"><i class="fas fa-list"></i> İşlemler</a>
+        <a href="raporlar.html"><i class="fas fa-chart-pie"></i> Raporlar</a>
+        <a href="index.html" class="logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+    </div>
+    
+    <div class="main">
+        <div class="topbar">
+            <h1>Hoş Geldin! 👋</h1>
+            <div class="user-info">
+                <span>Kullanıcı</span>
+                <div class="user-avatar">K</div>
+            </div>
+        </div>
+        
+        <div class="balance-card">
+            <small>GÜNCEL BAKİYE</small>
+            <div class="amount">₺12.450,00</div>
+            <div class="row">
+                <span>📈 Gelir: ₺15.000</span>
+                <span>📉 Gider: ₺2.550</span>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <button class="btn-income"><i class="fas fa-plus"></i> Gelir Ekle</button>
+            <button class="btn-expense"><i class="fas fa-minus"></i> Gider Ekle</button>
+        </div>
+        
+        <div class="section-title">Son İşlemler</div>
+        
+        <div class="transaction">
+            <div class="tx-icon red">🛒</div>
+            <div class="tx-info"><strong>Market</strong><span>Bugün</span></div>
+            <div class="tx-amount red">-₺245,00</div>
+        </div>
+        <div class="transaction">
+            <div class="tx-icon red">⚡</div>
+            <div class="tx-info"><strong>Elektrik Faturası</strong><span>Dün</span></div>
+            <div class="tx-amount red">-₺180,50</div>
+        </div>
+        <div class="transaction">
+            <div class="tx-icon green">💼</div>
+            <div class="tx-info"><strong>Maaş</strong><span>15 Mayıs</span></div>
+            <div class="tx-amount green">+₺15.000,00</div>
+        </div>
+        <div class="transaction">
+            <div class="tx-icon red">🍽️</div>
+            <div class="tx-info"><strong>Yemek</strong><span>14 Mayıs</span></div>
+            <div class="tx-amount red">-₺120,00</div>
+        </div>
+        <div class="transaction">
+            <div class="tx-icon red">🚌</div>
+            <div class="tx-info"><strong>Ulaşım</strong><span>13 Mayıs</span></div>
+            <div class="tx-amount red">-₺45,00</div>
+        </div>
+    </div>
+</body>
+</html>

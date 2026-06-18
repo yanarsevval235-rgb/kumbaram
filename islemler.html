@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşlemler - Kumbaram</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0D9488;
+            --primary-dark: #0F766E;
+            --primary-light: #CCFBF1;
+            --dark: #0F172A;
+            --gray: #64748B;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --font: "Inter", sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: #F0F9F6; display: flex; min-height: 100vh; }
+        
+        .sidebar {
+            width: 260px; background: white; padding: 30px 20px;
+            display: flex; flex-direction: column; gap: 6px;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+        }
+        .sidebar .logo {
+            font-size: 1.4rem; font-weight: 800; color: var(--dark);
+            text-decoration: none; margin-bottom: 30px; padding: 0 12px;
+        }
+        .sidebar .logo span { color: var(--primary); }
+        .sidebar a {
+            text-decoration: none; color: var(--gray); padding: 12px 16px;
+            border-radius: 12px; font-weight: 500; display: flex;
+            align-items: center; gap: 12px; transition: all 0.2s; font-size: 0.95rem;
+        }
+        .sidebar a:hover, .sidebar a.active { background: var(--primary-light); color: var(--primary); }
+        .sidebar .logout { margin-top: auto; color: #DC2626; }
+        
+        .main { flex: 1; padding: 30px; margin-left: 260px; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .topbar h1 { font-size: 1.8rem; font-weight: 700; }
+        
+        .summary-cards { display: flex; gap: 16px; margin-bottom: 24px; }
+        .summary-card {
+            flex: 1; background: white; padding: 20px; border-radius: 18px;
+            text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .summary-card .label { font-size: 0.8rem; color: var(--gray); margin-bottom: 6px; }
+        .summary-card .value { font-size: 1.5rem; font-weight: 700; }
+        .summary-card .value.green { color: #059669; }
+        .summary-card .value.red { color: #DC2626; }
+        
+        .filters { display: flex; gap: 8px; margin-bottom: 16px; }
+        .filter-btn {
+            padding: 8px 18px; border-radius: 20px; border: 1.5px solid #E2E8F0;
+            background: white; cursor: pointer; font-weight: 500; font-size: 0.9rem;
+            font-family: var(--font); transition: all 0.2s;
+        }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .search-box {
+            width: 100%; padding: 14px 16px 14px 44px;
+            border: 1.5px solid #E2E8F0; border-radius: 14px;
+            font-family: var(--font); font-size: 0.95rem; outline: none;
+            margin-bottom: 16px; background: white;
+        }
+        .search-box:focus { border-color: var(--primary); }
+        
+        .transaction {
+            background: white; padding: 16px; border-radius: 16px;
+            display: flex; align-items: center; gap: 14px; margin-bottom: 8px;
+            transition: all 0.2s; cursor: pointer;
+        }
+        .transaction:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .tx-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
+        }
+        .tx-icon.red { background: #FEE2E2; color: #DC2626; }
+        .tx-icon.green { background: #D1FAE5; color: #059669; }
+        .tx-info { flex: 1; }
+        .tx-info strong { display: block; font-size: 0.95rem; }
+        .tx-info span { font-size: 0.8rem; color: #94A3B8; }
+        .tx-amount { font-weight: 700; font-size: 0.95rem; }
+        .tx-amount.red { color: #DC2626; }
+        .tx-amount.green { color: #059669; }
+        .tx-delete {
+            color: #94A3B8; cursor: pointer; padding: 6px;
+            border-radius: 8px; transition: all 0.2s;
+        }
+        .tx-delete:hover { color: #DC2626; background: #FEE2E2; }
+        
+        .empty-state {
+            text-align: center; padding: 60px 20px; color: var(--gray);
+        }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 20px; }
+            .summary-cards { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="dashboard.html" class="logo">Kumb<span>aram</span></a>
+        <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="islem-ekle.html"><i class="fas fa-plus-circle"></i> İşlem Ekle</a>
+        <a href="islemler.html" class="active"><i class="fas fa-list"></i> İşlemler</a>
+        <a href="raporlar.html"><i class="fas fa-chart-pie"></i> Raporlar</a>
+        <a href="index.html" class="logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+    </div>
+    
+    <div class="main">
+        <div class="topbar"><h1>İşlemler</h1></div>
+        
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="label">Toplam Gelir</div>
+                <div class="value green" id="toplamGelir">₺0</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Toplam Gider</div>
+                <div class="value red" id="toplamGider">₺0</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Net Durum</div>
+                <div class="value" id="netDurum">₺0</div>
+            </div>
+        </div>
+        
+        <input type="text" class="search-box" placeholder="🔍 İşlem ara..." id="searchInput" oninput="renderIslemler()">
+        
+        <div class="filters">
+            <button class="filter-btn active" onclick="setFilter('all', this)">Tümü</button>
+            <button class="filter-btn" onclick="setFilter('gelir', this)">Gelirler</button>
+            <button class="filter-btn" onclick="setFilter('gider', this)">Giderler</button>
+        </div>
+        
+        <div id="islemListesi"></div>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+        
+        function getIslemler() {
+            return JSON.parse(localStorage.getItem('kumbaram_islemler') || '[]').reverse();
+        }
+        
+        function setFilter(filter, btn) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderIslemler();
+        }
+        
+        function islemSil(index) {
+            if (confirm('Bu işlemi silmek istediğinize emin misiniz?')) {
+                let islemler = JSON.parse(localStorage.getItem('kumbaram_islemler') || '[]');
+                islemler = islemler.reverse();
+                islemler.splice(index, 1);
+                localStorage.setItem('kumbaram_islemler', JSON.stringify(islemler.reverse()));
+                renderIslemler();
+            }
+        }
+        
+        function renderIslemler() {
+            const islemler = getIslemler();
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = islemler;
+            if (currentFilter === 'gelir') filtered = islemler.filter(i => i.tur === 'gelir');
+            if (currentFilter === 'gider') filtered = islemler.filter(i => i.tur === 'gider');
+            if (search) filtered = filtered.filter(i => i.aciklama.toLowerCase().includes(search) || i.kategori.toLowerCase().includes(search));
+            
+            let toplamGelir = islemler.filter(i => i.tur === 'gelir').reduce((sum, i) => sum + i.miktar, 0);
+            let toplamGider = islemler.filter(i => i.tur === 'gider').reduce((sum, i) => sum + i.miktar, 0);
+            
+            document.getElementById('toplamGelir').textContent = '₺' + toplamGelir.toLocaleString('tr-TR');
+            document.getElementById('toplamGider').textContent = '₺' + toplamGider.toLocaleString('tr-TR');
+            document.getElementById('netDurum').textContent = '₺' + (toplamGelir - toplamGider).toLocaleString('tr-TR');
+            document.getElementById('netDurum').className = 'value ' + ((toplamGelir - toplamGider) >= 0 ? 'green' : 'red');
+            
+            const container = document.getElementById('islemListesi');
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-receipt"></i><p>İşlem bulunamadı</p></div>`;
+                return;
+            }
+            
+            container.innerHTML = filtered.map((islem, i) => {
+                const isGelir = islem.tur === 'gelir';
+                const emoji = {
+                    'Maaş': '💼', 'Freelance': '💻', 'Yatırım': '📈', 'Hediye': '🎁', 'Ek İş': '🔧',
+                    'Market': '🛒', 'Fatura': '⚡', 'Ulaşım': '🚌', 'Yemek': '🍽️', 'Eğlence': '🎬',
+                    'Sağlık': '🏥', 'Giyim': '👕', 'Eğitim': '📚'
+                };
+                
+                return `
+                    <div class="transaction">
+                        <div class="tx-icon ${isGelir ? 'green' : 'red'}">${emoji[islem.kategori] || '📌'}</div>
+                        <div class="tx-info">
+                            <strong>${islem.aciklama}</strong>
+                            <span>${islem.kategori} • ${islem.tarih}</span>
+                        </div>
+                        <div class="tx-amount ${isGelir ? 'green' : 'red'}">${isGelir ? '+' : '-'}₺${islem.miktar.toLocaleString('tr-TR')}</div>
+                        <div class="tx-delete" onclick="islemSil(${i})"><i class="fas fa-trash-alt"></i></div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        renderIslemler();
+    </script>
+</body>
+</html>

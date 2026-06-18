@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raporlar - Kumbaram</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0D9488;
+            --primary-dark: #0F766E;
+            --primary-light: #CCFBF1;
+            --dark: #0F172A;
+            --gray: #64748B;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --font: "Inter", sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: #F0F9F6; display: flex; min-height: 100vh; }
+        
+        .sidebar {
+            width: 260px; background: white; padding: 30px 20px;
+            display: flex; flex-direction: column; gap: 6px;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+        }
+        .sidebar .logo {
+            font-size: 1.4rem; font-weight: 800; color: var(--dark);
+            text-decoration: none; margin-bottom: 30px; padding: 0 12px;
+        }
+        .sidebar .logo span { color: var(--primary); }
+        .sidebar a {
+            text-decoration: none; color: var(--gray); padding: 12px 16px;
+            border-radius: 12px; font-weight: 500; display: flex;
+            align-items: center; gap: 12px; transition: all 0.2s; font-size: 0.95rem;
+        }
+        .sidebar a:hover, .sidebar a.active { background: var(--primary-light); color: var(--primary); }
+        .sidebar .logout { margin-top: auto; color: #DC2626; }
+        
+        .main { flex: 1; padding: 30px; margin-left: 260px; }
+        .topbar { margin-bottom: 24px; }
+        .topbar h1 { font-size: 1.8rem; font-weight: 700; }
+        
+        .summary-cards { display: flex; gap: 16px; margin-bottom: 24px; }
+        .summary-card {
+            flex: 1; background: white; padding: 20px; border-radius: 18px;
+            text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .summary-card .label { font-size: 0.8rem; color: var(--gray); margin-bottom: 6px; }
+        .summary-card .value { font-size: 1.5rem; font-weight: 700; }
+        .summary-card .value.green { color: #059669; }
+        .summary-card .value.red { color: #DC2626; }
+        
+        .chart-card {
+            background: white; padding: 24px; border-radius: 18px;
+            margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .chart-card h3 { font-size: 1rem; margin-bottom: 20px; }
+        
+        .bar-item { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .bar-label { width: 90px; font-weight: 500; font-size: 0.9rem; }
+        .bar-track { flex: 1; height: 12px; background: #E2E8F0; border-radius: 10px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 10px; transition: width 1s ease; }
+        .bar-value { width: 80px; text-align: right; font-weight: 600; font-size: 0.9rem; }
+        
+        .karsilastirma { display: flex; gap: 16px; margin-bottom: 20px; }
+        .karsi-card {
+            flex: 1; background: white; padding: 20px; border-radius: 18px;
+            text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .karsi-card .ay { font-size: 0.85rem; color: var(--gray); margin-bottom: 4px; }
+        .karsi-card .tutar { font-size: 1.3rem; font-weight: 700; }
+        
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--gray); }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 20px; }
+            .summary-cards, .karsilastirma { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="dashboard.html" class="logo">Kumb<span>aram</span></a>
+        <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="islem-ekle.html"><i class="fas fa-plus-circle"></i> İşlem Ekle</a>
+        <a href="islemler.html"><i class="fas fa-list"></i> İşlemler</a>
+        <a href="raporlar.html" class="active"><i class="fas fa-chart-pie"></i> Raporlar</a>
+        <a href="index.html" class="logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+    </div>
+    
+    <div class="main">
+        <div class="topbar"><h1>Raporlar</h1></div>
+        
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="label">Toplam Gelir</div>
+                <div class="value green" id="toplamGelir">₺0</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Toplam Gider</div>
+                <div class="value red" id="toplamGider">₺0</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Net Durum</div>
+                <div class="value" id="netDurum">₺0</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">İşlem Sayısı</div>
+                <div class="value" id="islemSayisi">0</div>
+            </div>
+        </div>
+        
+        <div class="karsilastirma">
+            <div class="karsi-card">
+                <div class="ay">Bu Ay Gelir</div>
+                <div class="tutar green" id="buAyGelir">₺0</div>
+            </div>
+            <div class="karsi-card">
+                <div class="ay">Bu Ay Gider</div>
+                <div class="tutar red" id="buAyGider">₺0</div>
+            </div>
+            <div class="karsi-card">
+                <div class="ay">Ortalama İşlem</div>
+                <div class="tutar" id="ortalama">₺0</div>
+            </div>
+        </div>
+        
+        <div class="chart-card">
+            <h3>📊 Kategori Bazlı Gider Dağılımı</h3>
+            <div id="kategoriChart"></div>
+        </div>
+        
+        <div class="chart-card">
+            <h3>📈 Kategori Bazlı Gelir Dağılımı</h3>
+            <div id="gelirChart"></div>
+        </div>
+    </div>
+
+    <script>
+        const renkler = ['#0D9488', '#DC2626', '#F59E0B', '#6366F1', '#EC4899', '#14B8A6', '#F97316', '#8B5CF6'];
+        
+        function getIslemler() {
+            return JSON.parse(localStorage.getItem('kumbaram_islemler') || '[]');
+        }
+        
+        function renderRaporlar() {
+            const islemler = getIslemler();
+            const suan = new Date();
+            const buAy = `${suan.getFullYear()}-${String(suan.getMonth()+1).padStart(2,'0')}`;
+            
+            const toplamGelir = islemler.filter(i => i.tur === 'gelir').reduce((s, i) => s + i.miktar, 0);
+            const toplamGider = islemler.filter(i => i.tur === 'gider').reduce((s, i) => s + i.miktar, 0);
+            
+            document.getElementById('toplamGelir').textContent = '₺' + toplamGelir.toLocaleString('tr-TR');
+            document.getElementById('toplamGider').textContent = '₺' + toplamGider.toLocaleString('tr-TR');
+            document.getElementById('netDurum').textContent = '₺' + (toplamGelir - toplamGider).toLocaleString('tr-TR');
+            document.getElementById('islemSayisi').textContent = islemler.length;
+            
+            const buAyIslemler = islemler.filter(i => i.tarih.startsWith(buAy));
+            document.getElementById('buAyGelir').textContent = '₺' + buAyIslemler.filter(i => i.tur === 'gelir').reduce((s, i) => s + i.miktar, 0).toLocaleString('tr-TR');
+            document.getElementById('buAyGider').textContent = '₺' + buAyIslemler.filter(i => i.tur === 'gider').reduce((s, i) => s + i.miktar, 0).toLocaleString('tr-TR');
+            document.getElementById('ortalama').textContent = '₺' + (islemler.length > 0 ? ((toplamGelir + toplamGider) / islemler.length).toFixed(0) : 0);
+            
+            // Kategori bazlı gider
+            const giderKategori = {};
+            islemler.filter(i => i.tur === 'gider').forEach(i => {
+                giderKategori[i.kategori] = (giderKategori[i.kategori] || 0) + i.miktar;
+            });
+            
+            const maxGider = Math.max(...Object.values(giderKategori), 1);
+            document.getElementById('kategoriChart').innerHTML = Object.entries(giderKategori).length > 0
+                ? Object.entries(giderKategori).sort((a,b) => b[1]-a[1]).map(([k, v], i) => `
+                    <div class="bar-item">
+                        <div class="bar-label">${k}</div>
+                        <div class="bar-track"><div class="bar-fill" style="width:${(v/maxGider*100)}%;background:${renkler[i%renkler.length]};"></div></div>
+                        <div class="bar-value">₺${v.toLocaleString('tr-TR')}</div>
+                    </div>
+                `).join('')
+                : '<div class="empty-state"><p>Henüz gider yok</p></div>';
+            
+            // Kategori bazlı gelir
+            const gelirKategori = {};
+            islemler.filter(i => i.tur === 'gelir').forEach(i => {
+                gelirKategori[i.kategori] = (gelirKategori[i.kategori] || 0) + i.miktar;
+            });
+            
+            const maxGelir = Math.max(...Object.values(gelirKategori), 1);
+            document.getElementById('gelirChart').innerHTML = Object.entries(gelirKategori).length > 0
+                ? Object.entries(gelirKategori).sort((a,b) => b[1]-a[1]).map(([k, v], i) => `
+                    <div class="bar-item">
+                        <div class="bar-label">${k}</div>
+                        <div class="bar-track"><div class="bar-fill" style="width:${(v/maxGelir*100)}%;background:${renkler[i%renkler.length]};"></div></div>
+                        <div class="bar-value">₺${v.toLocaleString('tr-TR')}</div>
+                    </div>
+                `).join('')
+                : '<div class="empty-state"><p>Henüz gelir yok</p></div>';
+        }
+        
+        renderRaporlar();
+    </script>
+</body>
+</html>

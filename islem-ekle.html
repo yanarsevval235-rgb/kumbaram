@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşlem Ekle - Kumbaram</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0D9488;
+            --primary-dark: #0F766E;
+            --primary-light: #CCFBF1;
+            --dark: #0F172A;
+            --gray: #64748B;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --font: "Inter", sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: #F0F9F6; display: flex; min-height: 100vh; }
+        
+        .sidebar {
+            width: 260px;
+            background: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 100;
+        }
+        
+        .sidebar .logo {
+            font-size: 1.4rem; font-weight: 800; color: var(--dark);
+            text-decoration: none; margin-bottom: 30px; padding: 0 12px;
+        }
+        .sidebar .logo span { color: var(--primary); }
+        
+        .sidebar a {
+            text-decoration: none; color: var(--gray); padding: 12px 16px;
+            border-radius: 12px; font-weight: 500; display: flex;
+            align-items: center; gap: 12px; transition: all 0.2s; font-size: 0.95rem;
+        }
+        .sidebar a:hover, .sidebar a.active { background: var(--primary-light); color: var(--primary); }
+        .sidebar .logout { margin-top: auto; color: #DC2626; }
+        
+        .main { flex: 1; padding: 30px; margin-left: 260px; }
+        
+        .topbar { margin-bottom: 30px; }
+        .topbar h1 { font-size: 1.8rem; font-weight: 700; }
+        
+        .form-card {
+            background: white; padding: 32px; border-radius: 24px;
+            max-width: 600px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .form-tabs {
+            display: flex; background: #F1F5F9; border-radius: 14px;
+            padding: 4px; margin-bottom: 28px;
+        }
+        .form-tab {
+            flex: 1; padding: 12px; text-align: center; border-radius: 12px;
+            cursor: pointer; font-weight: 600; font-size: 0.95rem;
+            border: none; font-family: var(--font); transition: all 0.2s;
+            background: transparent; color: var(--gray);
+        }
+        .form-tab.active.income { background: #D1FAE5; color: #059669; }
+        .form-tab.active.expense { background: #FEE2E2; color: #DC2626; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 14px 16px; border: 1.5px solid #E2E8F0;
+            border-radius: 14px; font-family: var(--font); font-size: 1rem;
+            outline: none; transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,148,136,0.1);
+        }
+        
+        .category-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .category-tag {
+            padding: 8px 14px; border-radius: 10px; font-size: 0.85rem;
+            font-weight: 500; cursor: pointer; transition: all 0.2s;
+            border: 1.5px solid #E2E8F0; background: white;
+        }
+        .category-tag.selected.income { background: #D1FAE5; border-color: #059669; color: #059669; }
+        .category-tag.selected.expense { background: #FEE2E2; border-color: #DC2626; color: #DC2626; }
+        
+        .btn-submit {
+            width: 100%; padding: 16px; border: none; border-radius: 14px;
+            font-weight: 700; font-size: 1.1rem; cursor: pointer;
+            font-family: var(--font); transition: all 0.3s; margin-top: 8px;
+        }
+        .btn-submit.income { background: #059669; color: white; }
+        .btn-submit.income:hover { background: #047857; }
+        .btn-submit.expense { background: #DC2626; color: white; }
+        .btn-submit.expense:hover { background: #B91C1C; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="dashboard.html" class="logo">Kumb<span>aram</span></a>
+        <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="islem-ekle.html" class="active"><i class="fas fa-plus-circle"></i> İşlem Ekle</a>
+        <a href="islemler.html"><i class="fas fa-list"></i> İşlemler</a>
+        <a href="raporlar.html"><i class="fas fa-chart-pie"></i> Raporlar</a>
+        <a href="index.html" class="logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+    </div>
+    
+    <div class="main">
+        <div class="topbar"><h1>İşlem Ekle</h1></div>
+        
+        <div class="form-card">
+            <div class="form-tabs">
+                <button class="form-tab active income" id="tabIncome" onclick="setTab('income')">📈 Gelir</button>
+                <button class="form-tab expense" id="tabExpense" onclick="setTab('expense')">📉 Gider</button>
+            </div>
+            
+            <div class="form-group">
+                <label>Kategori</label>
+                <div class="category-tags" id="categoryTags"></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Miktar (₺)</label>
+                <input type="number" id="miktar" placeholder="0.00">
+            </div>
+            
+            <div class="form-group">
+                <label>Açıklama</label>
+                <input type="text" id="aciklama" placeholder="Market alışverişi, Maaş...">
+            </div>
+            
+            <div class="form-group">
+                <label>Tarih</label>
+                <input type="date" id="tarih">
+            </div>
+            
+            <button class="btn-submit income" id="btnSubmit" onclick="islemEkle()">
+                <i class="fas fa-plus"></i> Gelir Ekle
+            </button>
+            <p id="mesaj" style="text-align:center;margin-top:12px;display:none;"></p>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'income';
+        let selectedCategory = '';
+        
+        const incomeCategories = ['Maaş', 'Freelance', 'Yatırım', 'Hediye', 'Ek İş', 'Diğer Gelir'];
+        const expenseCategories = ['Market', 'Fatura', 'Ulaşım', 'Yemek', 'Eğlence', 'Sağlık', 'Giyim', 'Eğitim', 'Diğer Gider'];
+        
+        document.getElementById('tarih').value = new Date().toISOString().split('T')[0];
+
+        function setTab(tab) {
+            currentTab = tab;
+            selectedCategory = '';
+            
+            const tabIncome = document.getElementById('tabIncome');
+            const tabExpense = document.getElementById('tabExpense');
+            const btnSubmit = document.getElementById('btnSubmit');
+            
+            if (tab === 'income') {
+                tabIncome.className = 'form-tab active income';
+                tabExpense.className = 'form-tab expense';
+                btnSubmit.className = 'btn-submit income';
+                btnSubmit.innerHTML = '<i class="fas fa-plus"></i> Gelir Ekle';
+            } else {
+                tabIncome.className = 'form-tab income';
+                tabExpense.className = 'form-tab active expense';
+                btnSubmit.className = 'btn-submit expense';
+                btnSubmit.innerHTML = '<i class="fas fa-minus"></i> Gider Ekle';
+            }
+            
+            renderCategories();
+        }
+        
+        function renderCategories() {
+            const categories = currentTab === 'income' ? incomeCategories : expenseCategories;
+            const container = document.getElementById('categoryTags');
+            const type = currentTab === 'income' ? 'income' : 'expense';
+            
+            container.innerHTML = categories.map(cat => 
+                `<span class="category-tag ${cat === selectedCategory ? 'selected ' + type : ''}" onclick="selectCategory('${cat}')">${cat}</span>`
+            ).join('');
+        }
+        
+        function selectCategory(cat) {
+            selectedCategory = cat;
+            renderCategories();
+        }
+        
+        function islemEkle() {
+            const miktar = document.getElementById('miktar').value;
+            const aciklama = document.getElementById('aciklama').value;
+            const tarih = document.getElementById('tarih').value;
+            const mesaj = document.getElementById('mesaj');
+            
+            if (!selectedCategory || !miktar || !aciklama) {
+                mesaj.textContent = '⚠️ Lütfen tüm alanları doldurun!';
+                mesaj.style.color = '#DC2626';
+                mesaj.style.display = 'block';
+                return;
+            }
+            
+            const islem = {
+                tur: currentTab === 'income' ? 'gelir' : 'gider',
+                kategori: selectedCategory,
+                miktar: parseFloat(miktar),
+                aciklama: aciklama,
+                tarih: tarih
+            };
+            
+            let islemler = JSON.parse(localStorage.getItem('kumbaram_islemler') || '[]');
+            islemler.push(islem);
+            localStorage.setItem('kumbaram_islemler', JSON.stringify(islemler));
+            
+            mesaj.textContent = '✅ İşlem başarıyla kaydedildi!';
+            mesaj.style.color = '#059669';
+            mesaj.style.display = 'block';
+            
+            document.getElementById('miktar').value = '';
+            document.getElementById('aciklama').value = '';
+            selectedCategory = '';
+            renderCategories();
+            
+            setTimeout(() => { mesaj.style.display = 'none'; }, 2000);
+        }
+        
+        renderCategories();
+    </script>
+</body>
+</html>

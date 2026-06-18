@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tüm Yorumlar - Kumbaram</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230D9488'/%3E%3Ctext y='.75em' x='50' text-anchor='middle' font-size='65'%3E💰%3C/text%3E%3C/svg%3E">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyDiJsWgUrtOnqzS6qP4beaP05HaNfyxCKE",
+            authDomain: "kumbaram-ac0a8.firebaseapp.com",
+            projectId: "kumbaram-ac0a8",
+            storageBucket: "kumbaram-ac0a8.firebasestorage.app",
+            messagingSenderId: "320343915957",
+            appId: "1:320343915957:web:2cddbddbbe1d9df70aedfc"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.db = db;
+        window.collection = collection;
+        window.query = query;
+        window.where = where;
+        window.getDocs = getDocs;
+        window.onSnapshot = onSnapshot;
+    </script>
+    <style>
+        :root { --primary: #0D9488; --dark: #0F172A; --gray: #64748B; --white: #FFFFFF; --font: "Inter", sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: #F8FAFC; }
+        .header { background: var(--primary); padding: 20px 0; }
+        .header .container { max-width: 800px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; }
+        .logo span { color: #2DD4BF; }
+        .back-link { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; }
+        .back-link:hover { color: white; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
+        h1 { font-size: 2rem; font-weight: 900; margin-bottom: 6px; color: var(--dark); }
+        .subtitle { color: var(--gray); margin-bottom: 30px; }
+        .yorum-list { display: flex; flex-direction: column; gap: 14px; }
+        .yorum-card { background: white; padding: 24px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+        .yorum-card .avatar { width: 48px; height: 48px; border-radius: 50%; background: #D1FAE5; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); font-size: 1.2rem; }
+        .stars { color: #F59E0B; }
+        .loading { text-align: center; color: var(--gray); padding: 60px 0; }
+        .footer-note { text-align: center; color: var(--gray); font-size: 0.85rem; margin-top: 40px; }
+        .footer-note a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">Kumb<span>aram</span></a>
+            <a href="index.html" class="back-link">← Ana Sayfa</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>⭐ Tüm Yorumlar</h1>
+        <p class="subtitle">Kullanıcılarımızın Kumbaram hakkındaki düşünceleri</p>
+        
+        <div id="yorumListesi" class="yorum-list">
+            <p class="loading">Yorumlar yükleniyor...</p>
+        </div>
+        
+        <div class="footer-note">
+            <p>© 2026 Kumbaram. <a href="index.html">Ana Sayfaya Dön</a></p>
+        </div>
+    </div>
+
+    <script>
+        async function yorumlariYukle() {
+            const container = document.getElementById('yorumListesi');
+            
+            try {
+                const { collection, query, where, onSnapshot } = window;
+                const q = query(collection(window.db, "yorumlar"), where("onayli", "==", true));
+                
+                onSnapshot(q, (snapshot) => {
+                    if (snapshot.empty) {
+                        container.innerHTML = '<p class="loading">Henuz onaylanmis yorum yok.</p>';
+                        return;
+                    }
+                    
+                    let yorumlar = [];
+                    snapshot.forEach(doc => {
+                        yorumlar.push({ id: doc.id, ...doc.data() });
+                    });
+                    yorumlar.sort((a, b) => b.tarih.localeCompare(a.tarih));
+                    
+                    container.innerHTML = yorumlar.map(y => {
+                        const yildiz = '★'.repeat(y.puan) + '☆'.repeat(5 - y.puan);
+                        return `
+                            <div class="yorum-card">
+                                <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+                                    <div class="avatar">${y.ad.charAt(0).toUpperCase()}</div>
+                                    <div>
+                                        <strong>${y.ad}</strong>
+                                        <span style="display: block; font-size: 0.8rem; color: #94A3B8;">${y.tarih ? y.tarih.substring(0, 10) : 'Yeni'}</span>
+                                    </div>
+                                    <div class="stars" style="margin-left: auto; font-size: 1rem;">${yildiz}</div>
+                                </div>
+                                <p style="color: #64748B; line-height: 1.6;">${y.mesaj}</p>
+                            </div>
+                        `;
+                    }).join('');
+                });
+                
+            } catch (e) {
+                container.innerHTML = '<p class="loading" style="color:#DC2626;">Yorumlar yuklenemedi.</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(yorumlariYukle, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+           <!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - Kumbaram</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230D9488'/%3E%3Ctext y='.75em' x='50' text-anchor='middle' font-size='65'%3E💰%3C/text%3E%3C/svg%3E">
+    
+    <style>
+        .register-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+            padding: 20px;
+        }
+        
+        .register-card {
+            background: white;
+            padding: 48px;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .register-card .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0F172A;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        
+        .register-card .logo span { color: #0D9488; }
+        
+        .register-card p {
+            color: #64748B;
+            margin-bottom: 32px;
+            font-size: 0.95rem;
+        }
+        
+        .register-card .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .register-card label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: #0F172A;
+        }
+        
+        .register-card input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 14px;
+            font-family: "Inter", sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .register-card input:focus {
+            border-color: #0D9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+        
+        .register-card .btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.05rem;
+            margin-top: 8px;
+        }
+        
+        .register-card .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #64748B;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        
+        .register-card .back-link:hover {
+            color: #0D9488;
+        }
+
+        .btn-primary {
+            background: #0D9488;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: "Inter", sans-serif;
+        }
+
+        .btn-primary:hover {
+            background: #0F766E;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(13,148,136,0.3);
+        }
+    </style>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDiJsWgUrtOnqzS6qP4beaP05HaNfyxCKE",
+            authDomain: "kumbaram-ac0a8.firebaseapp.com",
+            projectId: "kumbaram-ac0a8",
+            storageBucket: "kumbaram-ac0a8.firebasestorage.app",
+            messagingSenderId: "320343915957",
+            appId: "1:320343915957:web:2cddbddbbe1d9df70aedfc"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.db = db;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.query = query;
+        window.where = where;
+        window.getDocs = getDocs;
+    </script>
+</head>
+<body>
+    <div class="register-page">
+        <div class="register-card">
+            <a href="index.html" class="logo">Kumb<span>aram</span></a>
+            <p>Hemen ücretsiz hesap oluştur, finansal özgürlüğüne adım at.</p>
+            
+            <form onsubmit="return false;">
+                <div class="form-group"><label>Ad Soyad</label><input type="text" id="adSoyad" placeholder="Adınız Soyadınız" required></div>
+                <div class="form-group"><label>E-posta</label><input type="email" id="email" placeholder="ornek@mail.com" required></div>
+                <div class="form-group"><label>Şifre</label><input type="password" id="sifre" placeholder="••••••••" required></div>
+                <button type="button" class="btn btn-primary" onclick="kayitOl()">Kayıt Ol <i class="fas fa-arrow-right"></i></button>
+                <p id="uyari" style="color:#DC2626; margin-top:12px; display:none;"></p>
+            </form>
+            
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Ana Sayfaya Dön</a>
+        </div>
+    </div>
+
+    <script>
+        async function kayitOl() {
+            const email = document.getElementById('email').value;
+            const adSoyad = document.getElementById('adSoyad').value;
+            const sifre = document.getElementById('sifre').value;
+            const uyari = document.getElementById('uyari');
+
+            if (!email || !adSoyad || !sifre) {
+                uyari.textContent = '⚠️ Lütfen tüm alanları doldurun!';
+                uyari.style.display = 'block';
+                return;
+            }
+
+            const { collection, query, where, getDocs, addDoc } = window;
+            const db = window.db;
+
+            const q = query(collection(db, "kullanicilar"), where("email", "==", email));
+            const snapshot = await getDocs(q);
+
+            if (!snapshot.empty) {
+                uyari.textContent = '⚠️ Bu e-posta adresi zaten kayıtlı!';
+                uyari.style.display = 'block';
+                return;
+            }
+
+            await addDoc(collection(db, "kullanicilar"), {
+                adSoyad: adSoyad,
+                email: email,
+                sifre: sifre,
+                tarih: new Date().toISOString()
+            });
+
+            alert('✅ Kaydınız başarıyla oluşturuldu!');
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>
