@@ -1470,3 +1470,30 @@ body {
     width: 100%;
     height: auto;
 }
+
+
+.footer {
+    position: relative;
+    padding-top: 50px;
+    margin-top: -1px;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: #0D9488;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+.footer-wave {
+    display: block !important;
+    position: absolute;
+    top: -50px;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
