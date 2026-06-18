@@ -1427,3 +1427,24 @@ body {
     
     .reviews-section > .container > div { grid-template-columns: 1fr !important; gap: 24px !important; }
 }
+
+
+.contact {
+    background: linear-gradient(135deg, #0F172A, #1E293B) !important;
+}
+
+.contact-item h4 {
+    color: rgba(255,255,255,0.7) !important;
+}
+
+.contact-item p {
+    color: white !important;
+}
+
+.contact-item-icon i {
+    color: #2DD4BF !important;
+}
+
+.contact-social a {
+    color: white !important;
+}
