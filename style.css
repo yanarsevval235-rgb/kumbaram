@@ -1429,22 +1429,19 @@ body {
 }
 
 
-.contact {
-    background: linear-gradient(135deg, #0F172A, #1E293B) !important;
-}
-
 .contact-item h4 {
-    color: rgba(255,255,255,0.7) !important;
+    color: var(--dark) !important;
 }
 
 .contact-item p {
-    color: white !important;
+    color: var(--dark) !important;
 }
 
 .contact-item-icon i {
-    color: #2DD4BF !important;
+    color: var(--primary) !important;
 }
 
 .contact-social a {
-    color: white !important;
+    color: var(--primary) !important;
+    background: var(--primary-light) !important;
 }
