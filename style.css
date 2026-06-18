@@ -1445,3 +1445,17 @@ body {
     color: var(--primary) !important;
     background: var(--primary-light) !important;
 }
+
+
+.contact-info-side h2,
+.contact-info-side p,
+.contact-item h4,
+.contact-item p {
+    color: #0F172A !important;
+    opacity: 1 !important;
+}
+
+.contact .section-header .section-tag {
+    color: #0F172A !important;
+    background: rgba(13,148,136,0.1) !important;
+}
