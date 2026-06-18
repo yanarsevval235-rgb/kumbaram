@@ -1462,12 +1462,11 @@ body {
 
 
 .footer-wave {
+    display: block !important;
     line-height: 0;
-    margin-top: -2px;
 }
-
 .footer-wave svg {
+    display: block !important;
     width: 100%;
     height: auto;
-    display: block;
 }
