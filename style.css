@@ -168,9 +168,10 @@ body {
     padding: 100px 0;
     background: linear-gradient(180deg, var(--white) 0%, rgba(204, 251, 241, 0.3) 100%);
 }
-.contact-item h4 { font-size: 0.85rem; color: #64748B; margin-bottom: 2px; }
-.contact-item p { font-weight: 600; font-size: 1rem; color: #0F172A; }
-.contact-item-icon i { color: #0D9488; font-size: 20px; }
+.contact-item h4 { font-size: 0.85rem; color: #000000; margin-bottom: 2px; }
+.contact-item p { font-weight: 600; font-size: 1rem; color: #000000; }
+.contact-item-icon i { color: #000000; font-size: 20px; }
+.contact-social a { width: 44px; height: 44px; background: rgba(0,0,0,0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #000000; text-decoration: none; font-size: 18px; transition: all 0.3s; }
 .contact-social a { width: 44px; height: 44px; background: rgba(13,148,136,0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #0D9488; text-decoration: none; font-size: 18px; transition: all 0.3s; }
 .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1000px; margin: 0 auto; }
 .contact-items { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
