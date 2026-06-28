@@ -166,12 +166,12 @@ body {
 /* İLETİŞİM */
 .contact {
     padding: 100px 0;
-    background: #0F172A;
+    background: linear-gradient(180deg, var(--white) 0%, rgba(204, 251, 241, 0.3) 100%);
 }
-.contact .section-header .section-tag { background: rgba(255,255,255,0.15); color: white; }
-.contact .section-header h2 { color: white; }
-.contact .section-header h2 span { color: #F59E0B; }
-.contact .section-header p { color: rgba(255,255,255,0.8); }
+.contact .section-header .section-tag { background: rgba(13,148,136,0.1); color: var(--primary); }
+.contact .section-header h2 { color: var(--dark); }
+.contact .section-header h2 span { color: var(--primary); }
+.contact .section-header p { color: var(--gray); }
 .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1000px; margin: 0 auto; }
 .contact-items { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
 .contact-item { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s; }
